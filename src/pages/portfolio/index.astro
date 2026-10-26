@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('portfolio');
+projects.sort((a, b) => Number(b.data.year) - Number(a.data.year));
+---
+
+<BaseLayout
+	title="Katalog Portofolio"
+	description="Daftar proyek terpilih, perangkat lunak sumber terbuka, dan eksperimen yang dikembangkan oleh Lerian Febriana."
+>
+	<div class="space-y-10">
+		<!-- Page Header -->
+		<section class="space-y-2">
+			<div class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				// Proyek Terpilih &amp; Eksperimen
+			</div>
+			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				Katalog Portofolio
+			</h1>
+			<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+				Daftar proyek terpilih, perkakas pengembang (*tooling*), serta repositori terbuka yang pernah atau sedang aktif saya kerjakan.
+			</p>
+		</section>
+
+		<!-- Projects Cards Grid -->
+		<section class="space-y-6">
+			{projects.length === 0 ? (
+				<p class="text-sm font-mono text-neutral-500">Belum ada proyek yang dicantumkan.</p>
+			) : (
+				<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+					{projects.map((project) => (
+						<article class="border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-5 flex flex-col justify-between transition-colors group space-y-4">
+							<div class="space-y-2.5">
+								<div class="flex items-center justify-between text-xs font-mono text-neutral-500 dark:text-neutral-400">
+									<span class="font-semibold">{project.data.year}</span>
+									{project.data.featured && (
+										<span class="border border-neutral-300 dark:border-neutral-700 px-1.5 py-0.5 text-[11px]">
+											featured
+										</span>
+									)}
+								</div>
+
+								<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4 decoration-neutral-400">
+									<a href={`/portfolio/${project.id}`}>
+										{project.data.title}
+									</a>
+								</h2>
+
+								<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+									{project.data.description}
+								</p>
+							</div>
+
+							<div class="space-y-3 pt-2">
+								{project.data.stack && project.data.stack.length > 0 && (
+									<div class="flex flex-wrap gap-1 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+										{project.data.stack.map((tech) => (
+											<span class="border border-neutral-200 dark:border-neutral-800 px-1.5 py-0.5">
+												{tech}
+											</span>
+										))}
+									</div>
+								)}
+
+								<div class="pt-2 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+									<a
+										href={`/portfolio/${project.id}`}
+										class="text-neutral-900 dark:text-neutral-100 underline underline-offset-2 hover:opacity-80 font-semibold"
+									>
+										[detail ->]
+									</a>
+									<div class="flex items-center gap-3">
+										{project.data.github && (
+											<a
+												href={project.data.github}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+											>
+												github
+											</a>
+										)}
+										{project.data.link && project.data.link !== project.data.github && (
+											<a
+												href={project.data.link}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+											>
+												live
+											</a>
+										)}
+									</div>
+								</div>
+							</div>
+						</article>
+					))}
+				</div>
+			)}
+		</section>
+	</div>
+</BaseLayout>

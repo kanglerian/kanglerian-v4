@@ -1,0 +1,198 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { id: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatDate = (date: Date) => {
+	return date.toISOString().split('T')[0];
+};
+---
+
+<BaseLayout
+	title={post.data.title}
+	description={post.data.description}
+	ogType="article"
+	pubDate={post.data.pubDate}
+	updatedDate={post.data.updatedDate}
+>
+	<article class="space-y-8">
+		<!-- Back to list -->
+		<div>
+			<a
+				href="/blog"
+				class="text-xs font-mono uppercase tracking-wider text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors underline underline-offset-4"
+			>
+				&larr; [kembali ke arsip artikel]
+			</a>
+		</div>
+
+		<!-- Article Header -->
+		<header class="space-y-4 border-b border-neutral-200 dark:border-neutral-800 pb-6">
+			<div class="flex items-center gap-3 text-xs font-mono text-neutral-500 dark:text-neutral-400">
+				<time datetime={post.data.pubDate.toISOString()}>
+					{formatDate(post.data.pubDate)}
+				</time>
+				{post.data.tags && post.data.tags.length > 0 && (
+					<span>&bull;</span>
+					<div class="flex gap-1.5 flex-wrap">
+						{post.data.tags.map((tag) => (
+							<span>#{tag}</span>
+						))}
+					</div>
+				)}
+			</div>
+
+			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				{post.data.title}
+			</h1>
+
+			<p class="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
+				{post.data.description}
+			</p>
+		</header>
+
+		<!-- Article Body -->
+		<div class="markdown-body text-neutral-800 dark:text-neutral-200">
+			<Content />
+		</div>
+
+		<!-- Post Footer -->
+		<footer class="pt-8 border-t border-neutral-200 dark:border-neutral-800 space-y-4">
+			<div class="p-4 border border-neutral-200 dark:border-neutral-800 font-mono text-xs text-neutral-600 dark:text-neutral-400 space-y-2">
+				<p class="font-bold text-neutral-900 dark:text-neutral-100">// Umpan Balik &amp; Diskusi</p>
+				<p>
+					Punya pertanyaan atau tanggapan terkait tulisan ini? Kirimkan email ke{' '}
+					<a
+						href={`mailto:kanglerian@gmail.com?subject=Tanggapan: ${encodeURIComponent(post.data.title)}`}
+						class="text-neutral-900 dark:text-neutral-100 underline underline-offset-2"
+					>
+						kanglerian@gmail.com
+					</a>
+				</p>
+			</div>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style is:global>
+	.markdown-body h2 {
+		font-family: var(--font-sans);
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: currentColor;
+		margin-top: 2.25rem;
+		margin-bottom: 0.75rem;
+		letter-spacing: -0.02em;
+	}
+	.markdown-body h3 {
+		font-family: var(--font-sans);
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: currentColor;
+		margin-top: 1.75rem;
+		margin-bottom: 0.5rem;
+	}
+	.markdown-body p {
+		font-size: 0.95rem;
+		line-height: 1.75;
+		margin-bottom: 1.25rem;
+	}
+	.markdown-body ul,
+	.markdown-body ol {
+		margin-top: 0.5rem;
+		margin-bottom: 1.25rem;
+		padding-left: 1.5rem;
+		font-size: 0.95rem;
+		line-height: 1.7;
+	}
+	.markdown-body ul {
+		list-style-type: disc;
+	}
+	.markdown-body ol {
+		list-style-type: decimal;
+	}
+	.markdown-body li {
+		margin-bottom: 0.35rem;
+	}
+	.markdown-body blockquote {
+		border-left: 2px solid;
+		padding-left: 1rem;
+		margin-top: 1.25rem;
+		margin-bottom: 1.25rem;
+		font-style: italic;
+	}
+	.markdown-body pre {
+		padding: 1rem;
+		border: 1px solid;
+		overflow-x: auto;
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		line-height: 1.5;
+		margin-top: 1.25rem;
+		margin-bottom: 1.25rem;
+	}
+	.markdown-body code:not(pre code) {
+		font-family: var(--font-mono);
+		font-size: 0.85em;
+		padding: 0.15rem 0.35rem;
+		border: 1px solid;
+	}
+	.markdown-body a {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+	.markdown-body hr {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+		border: 0;
+		border-top: 1px solid;
+	}
+
+	/* Light mode styles */
+	html:not(.dark) .markdown-body blockquote {
+		border-color: #d4d4d4;
+		color: #525252;
+	}
+	html:not(.dark) .markdown-body pre {
+		background-color: #f5f5f5;
+		border-color: #e5e5e5;
+		color: #171717;
+	}
+	html:not(.dark) .markdown-body code:not(pre code) {
+		background-color: #f5f5f5;
+		border-color: #e5e5e5;
+		color: #171717;
+	}
+	html:not(.dark) .markdown-body hr {
+		border-color: #e5e5e5;
+	}
+
+	/* Dark mode styles */
+	html.dark .markdown-body blockquote {
+		border-color: #404040;
+		color: #a3a3a3;
+	}
+	html.dark .markdown-body pre {
+		background-color: #0a0a0a;
+		border-color: #262626;
+		color: #f5f5f5;
+	}
+	html.dark .markdown-body code:not(pre code) {
+		background-color: #171717;
+		border-color: #262626;
+		color: #f5f5f5;
+	}
+	html.dark .markdown-body hr {
+		border-color: #262626;
+	}
+</style>

@@ -1,16 +1,183 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const recentPosts = posts.slice(0, 3);
+
+const projects = await getCollection('portfolio');
+projects.sort((a, b) => Number(b.data.year) - Number(a.data.year));
+const featuredProjects = projects.filter((p) => p.data.featured).slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+	title="Lerian Febriana"
+	description="Personal website Lerian Febriana — Software Engineer. Minimalis, tipografi sans & mono, berbasis teks."
+>
+	<div class="space-y-12">
+		<!-- Hero / Intro -->
+		<section class="space-y-4">
+			<div>
+				<h1 class="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+					Lerian Febriana
+				</h1>
+				<p class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mt-1.5">
+					Software Engineer &amp; Builder
+				</p>
+			</div>
+			<p class="text-neutral-800 dark:text-neutral-200 text-sm sm:text-base leading-relaxed">
+				Halo. Saya Lerian — fokus merancang dan membangun software yang sederhana, cepat, dan reliabel.
+				Menyukai arsitektur sistem yang ringkas, clean code, serta otomatisasi tanpa kerumitan yang berlebihan.
+			</p>
+		</section>
+
+		<!-- Focus -->
+		<section class="space-y-3">
+			<h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				01 // Fokus &amp; Minat
+			</h2>
+			<ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
+				<li class="flex items-baseline gap-2.5">
+					<span class="font-mono text-xs text-neutral-400 dark:text-neutral-500 select-none">-></span>
+					<span>System architecture &amp; backend engineering</span>
+				</li>
+				<li class="flex items-baseline gap-2.5">
+					<span class="font-mono text-xs text-neutral-400 dark:text-neutral-500 select-none">-></span>
+					<span>Fast, lightweight &amp; accessible web experiences</span>
+				</li>
+				<li class="flex items-baseline gap-2.5">
+					<span class="font-mono text-xs text-neutral-400 dark:text-neutral-500 select-none">-></span>
+					<span>Developer tooling, workflow automation &amp; scripting</span>
+				</li>
+			</ul>
+		</section>
+
+		<!-- Featured Projects / Portofolio -->
+		<section class="space-y-4">
+			<div class="flex items-baseline justify-between gap-4">
+				<h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+					02 // Portofolio Terpilih
+				</h2>
+				<a
+					href="/portfolio"
+					class="text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+				>
+					[lihat semua katalog &rarr;]
+				</a>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
+				{featuredProjects.map((project) => (
+					<article class="border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-4 flex flex-col justify-between transition-colors group space-y-3">
+						<div class="space-y-1.5">
+							<div class="flex items-center justify-between text-xs font-mono text-neutral-500 dark:text-neutral-400">
+								<span>{project.data.year}</span>
+								<span class="text-[11px] border border-neutral-200 dark:border-neutral-800 px-1 py-0.2">
+									featured
+								</span>
+							</div>
+							<h3 class="text-sm font-bold text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4 decoration-neutral-400">
+								<a href={`/portfolio/${project.id}`}>
+									{project.data.title}
+								</a>
+							</h3>
+							<p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-2">
+								{project.data.description}
+							</p>
+						</div>
+						<div class="pt-2 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+							<a
+								href={`/portfolio/${project.id}`}
+								class="text-neutral-900 dark:text-neutral-100 underline underline-offset-2 hover:opacity-80"
+							>
+								[detail &rarr;]
+							</a>
+							{project.data.github && (
+								<a
+									href={project.data.github}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+								>
+									github
+								</a>
+							)}
+						</div>
+					</article>
+				))}
+			</div>
+		</section>
+
+		<!-- Recent Articles / Blog -->
+		<section class="space-y-4">
+			<div class="flex items-baseline justify-between gap-4">
+				<h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+					03 // Tulisan &amp; Catatan Terbaru
+				</h2>
+				<a
+					href="/blog"
+					class="text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+				>
+					[arsip artikel &rarr;]
+				</a>
+			</div>
+
+			<div class="space-y-4">
+				{recentPosts.map((post) => (
+					<div class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-4 py-1 space-y-1">
+						<div class="flex flex-wrap items-baseline justify-between gap-2">
+							<a
+								href={`/blog/${post.id}`}
+								class="text-sm font-medium text-neutral-900 dark:text-neutral-100 underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white transition-colors"
+							>
+								{post.data.title}
+							</a>
+							<time
+								datetime={post.data.pubDate.toISOString()}
+								class="text-xs font-mono text-neutral-400 dark:text-neutral-500 shrink-0"
+							>
+								{post.data.pubDate.toISOString().split('T')[0]}
+							</time>
+						</div>
+						<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+							{post.data.description}
+						</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<section class="space-y-3">
+			<h2 class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				04 // Kontak
+			</h2>
+			<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+				Terbuka untuk diskusi teknis, kolaborasi proyek, atau sekadar bertukar sapa:
+			</p>
+			<ul class="space-y-2 text-sm font-mono pt-1">
+				<li class="flex gap-2">
+					<span class="text-neutral-400 dark:text-neutral-500 select-none w-16">github:</span>
+					<a
+						href="https://github.com/kanglerian"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-neutral-900 dark:text-neutral-100 underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white"
+					>
+						kanglerian
+					</a>
+				</li>
+				<li class="flex gap-2">
+					<span class="text-neutral-400 dark:text-neutral-500 select-none w-16">email :</span>
+					<a
+						href="mailto:kanglerian@gmail.com"
+						class="text-neutral-900 dark:text-neutral-100 underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white"
+					>
+						kanglerian@gmail.com
+					</a>
+				</li>
+			</ul>
+		</section>
+	</div>
+</BaseLayout>

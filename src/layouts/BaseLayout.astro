@@ -1,0 +1,245 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	ogType?: 'website' | 'article';
+	pubDate?: Date;
+	updatedDate?: Date;
+}
+
+const {
+	title = 'Lerian Febriana',
+	description = 'Personal website Lerian Febriana — Software Engineer. Minimalis, tipografi sans & mono, berbasis teks.',
+	ogType = 'website',
+	pubDate,
+	updatedDate,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://kanglerian.github.io');
+const currentYear = new Date().getFullYear();
+const siteTitle = 'Lerian Febriana';
+const fullTitle = title === siteTitle ? siteTitle : `${title} — ${siteTitle}`;
+
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) => {
+	if (path === '/') return currentPath === '/';
+	return currentPath.startsWith(path);
+};
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': ogType === 'article' ? 'BlogPosting' : 'WebSite',
+	headline: title,
+	description: description,
+	url: canonicalURL.toString(),
+	author: {
+		'@type': 'Person',
+		name: 'Lerian Febriana',
+		url: 'https://github.com/kanglerian',
+	},
+	...(pubDate ? { datePublished: pubDate.toISOString() } : {}),
+	...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+};
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- SEO Primary Meta Tags -->
+		<title>{fullTitle}</title>
+		<meta name="title" content={fullTitle} />
+		<meta name="description" content={description} />
+		<meta name="author" content="Lerian Febriana" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content={ogType} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content={siteTitle} />
+		{pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+		{updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
+
+		<!-- Twitter Card -->
+		<meta property="twitter:card" content="summary" />
+		<meta property="twitter:url" content={canonicalURL} />
+		<meta property="twitter:title" content={fullTitle} />
+		<meta property="twitter:description" content={description} />
+
+		<!-- JSON-LD Structured Data for Search Engines -->
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+		<!-- FontAwesome CDN for Social Icons -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+
+		<!-- Dark Mode Initialization (Zero Flash) -->
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+
+			if (theme === 'dark') {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
+	</head>
+	<body class="bg-white text-neutral-900 dark:bg-black dark:text-neutral-100 min-h-screen selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black antialiased transition-colors duration-150">
+		<div class="max-w-2xl mx-auto px-6 py-12 sm:py-20 space-y-12">
+			<!-- Header & Navigation -->
+			<header class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 dark:border-neutral-800 pb-5 gap-4">
+				<a
+					href="/"
+					class="text-xs font-mono tracking-widest text-neutral-900 dark:text-neutral-100 hover:underline"
+				>
+					lerian:~$
+				</a>
+
+				<nav class="flex items-center gap-4 text-xs font-mono uppercase tracking-wider flex-wrap">
+					<a
+						href="/"
+						class={`transition-colors ${isActive('/') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[home]
+					</a>
+					<a
+						href="/blog"
+						class={`transition-colors ${isActive('/blog') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[artikel]
+					</a>
+					<a
+						href="/portfolio"
+						class={`transition-colors ${isActive('/portfolio') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[portofolio]
+					</a>
+					<a
+						href="/tutorials"
+						class={`transition-colors ${isActive('/tutorials') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[tutorial]
+					</a>
+					<a
+						href="/shop"
+						class={`transition-colors ${isActive('/shop') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[shop]
+					</a>
+					<a
+						href="/links"
+						class={`transition-colors ${isActive('/links') ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4 font-semibold' : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white'}`}
+					>
+						[links]
+					</a>
+					<button
+						id="theme-toggle"
+						type="button"
+						aria-label="Ganti tema"
+						class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white cursor-pointer transition-colors"
+					>
+						[mode]
+					</button>
+				</nav>
+			</header>
+
+			<!-- Main Content Slot -->
+			<main>
+				<slot />
+			</main>
+
+			<!-- Footer with Social Icons -->
+			<footer class="pt-8 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-xs font-mono text-neutral-500 dark:text-neutral-400">
+				<div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+					<span>&copy; {currentYear} Lerian Febriana</span>
+					<span class="text-neutral-400 dark:text-neutral-500 hidden sm:inline">&bull;</span>
+					<span class="text-neutral-400 dark:text-neutral-500">[sans + mono]</span>
+				</div>
+
+				<!-- Social Media Icons (FontAwesome) -->
+				<div class="flex items-center gap-4 text-base text-neutral-500 dark:text-neutral-400">
+					<a
+						href="https://github.com/kanglerian"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="GitHub"
+						class="hover:text-black dark:hover:text-white transition-colors"
+					>
+						<i class="fa-brands fa-github"></i>
+					</a>
+					<a
+						href="https://x.com/kanglerian"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="X (Twitter)"
+						class="hover:text-black dark:hover:text-white transition-colors"
+					>
+						<i class="fa-brands fa-x-twitter"></i>
+					</a>
+					<a
+						href="https://linkedin.com/in/kanglerian"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="LinkedIn"
+						class="hover:text-black dark:hover:text-white transition-colors"
+					>
+						<i class="fa-brands fa-linkedin"></i>
+					</a>
+					<a
+						href="mailto:kanglerian@gmail.com"
+						aria-label="Email"
+						class="hover:text-black dark:hover:text-white transition-colors"
+					>
+						<i class="fa-solid fa-envelope"></i>
+					</a>
+				</div>
+			</footer>
+		</div>
+
+		<!-- Theme Toggle Handler -->
+		<script>
+			const toggle = document.getElementById('theme-toggle');
+			const updateLabel = () => {
+				const isDark = document.documentElement.classList.contains('dark');
+				if (toggle) {
+					toggle.textContent = isDark ? '[mode: terang]' : '[mode: gelap]';
+				}
+			};
+
+			updateLabel();
+
+			toggle?.addEventListener('click', () => {
+				const isDark = document.documentElement.classList.contains('dark');
+				if (isDark) {
+					document.documentElement.classList.remove('dark');
+					localStorage.setItem('theme', 'light');
+				} else {
+					document.documentElement.classList.add('dark');
+					localStorage.setItem('theme', 'dark');
+				}
+				updateLabel();
+			});
+		</script>
+	</body>
+</html>

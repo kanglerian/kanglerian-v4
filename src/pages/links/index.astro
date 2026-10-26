@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+interface LinkCard {
+	title: string;
+	url: string;
+	description: string;
+	category: string;
+	badge: string;
+	external?: boolean;
+}
+
+const links: LinkCard[] = [
+	{
+		title: 'GitHub',
+		url: 'https://github.com/kanglerian',
+		description: 'Kumpulan kode sumber, repositori publik, dan proyek terbuka.',
+		category: 'Kode',
+		badge: 'github',
+		external: true,
+	},
+	{
+		title: 'Email',
+		url: 'mailto:kanglerian@gmail.com',
+		description: 'Hubungi saya untuk diskusi teknis, kolaborasi, atau peluang kerja.',
+		category: 'Kontak',
+		badge: 'email',
+		external: true,
+	},
+	{
+		title: 'Portofolio',
+		url: '/portfolio',
+		description: 'Katalog proyek terpilih, studi kasus, dan arsitektur sistem.',
+		category: 'Karya',
+		badge: 'internal',
+	},
+	{
+		title: 'Blog / Artikel',
+		url: '/blog',
+		description: 'Tulisan seputar rekayasa software, web performance, dan minimalisme.',
+		category: 'Tulisan',
+		badge: 'internal',
+	},
+	{
+		title: 'Shop & Gear',
+		url: '/shop',
+		description: 'Rekomendasi perangkat meja kerja, buku, dan Shopee Affiliate.',
+		category: 'Afiliasi',
+		badge: 'shopee',
+	},
+	{
+		title: 'Source Code Website',
+		url: 'https://github.com/kanglerian/kanglerian-v2',
+		description: 'Repositori open-source website ini, dibangun dengan Astro & Tailwind.',
+		category: 'Repo',
+		badge: 'open-source',
+		external: true,
+	},
+	{
+		title: 'X / Twitter',
+		url: 'https://x.com/kanglerian',
+		description: 'Pikiran singkat, update seputar software, dan diskusi teknologi.',
+		category: 'Sosial',
+		badge: 'x.com',
+		external: true,
+	},
+	{
+		title: 'LinkedIn',
+		url: 'https://linkedin.com/in/kanglerian',
+		description: 'Profil profesional, riwayat karir, dan koneksi kerja.',
+		category: 'Karier',
+		badge: 'linkedin',
+		external: true,
+	},
+];
+---
+
+<BaseLayout
+	title="Tautan & Link Penting"
+	description="Pusat navigasi dan daftar tautan penting Lerian Febriana — Software Engineer."
+>
+	<div class="space-y-8">
+		<!-- Page Header -->
+		<section class="space-y-2">
+			<div class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				// Pusat Tautan / Linktree
+			</div>
+			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				Tautan Penting
+			</h1>
+			<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-2xl">
+				Daftar pintas ke profil teknis, repositori kode, artikel tulisan, katalog portofolio, dan rekomendasi perlengkapan.
+			</p>
+		</section>
+
+		<!-- Cards Grid: Grid 1 di Mobile, Grid 4 di Desktop -->
+		<section>
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+				{links.map((link) => (
+					<a
+						href={link.url}
+						target={link.external ? '_blank' : undefined}
+						rel={link.external ? 'noopener noreferrer' : undefined}
+						class="border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-5 flex flex-col justify-between transition-colors group space-y-4"
+					>
+						<div class="space-y-2.5">
+							<div class="flex items-center justify-between text-xs font-mono">
+								<span class="text-neutral-400 dark:text-neutral-500 text-[11px] uppercase tracking-wider">
+									{link.category}
+								</span>
+								<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
+									{link.badge}
+								</span>
+							</div>
+
+							<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4 decoration-neutral-400">
+								{link.title}
+							</h2>
+
+							<p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+								{link.description}
+							</p>
+						</div>
+
+						<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+							<span class="text-neutral-400 dark:text-neutral-500 text-[11px] truncate max-w-[130px]">
+								{link.url.replace(/^https?:\/\//, '')}
+							</span>
+							<span class="font-bold text-neutral-900 dark:text-neutral-100 group-hover:translate-x-0.5 transition-transform">
+								[buka &rarr;]
+							</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+	</div>
+</BaseLayout>

@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const items = await getCollection('shop');
+const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data.category)))];
+---
+
+<BaseLayout
+	title="Shop & Gear List"
+	description="Rekomendasi perangkat keras, setup meja kerja, dan buku pilihan Lerian Febriana dengan tautan Shopee Affiliate."
+>
+	<div class="space-y-10">
+		<!-- Header -->
+		<section class="space-y-2">
+			<div class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				// Rekomendasi &amp; Pilihan
+			</div>
+			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				Shop &amp; Gear List
+			</h1>
+			<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+				Kumpulan perkakas kerja, aksesori meja (*desk setup*), buku, dan perlengkapan harian yang saya gunakan serta rekomendasikan secara objektif.
+			</p>
+		</section>
+
+		<!-- Affiliate Disclosure Box -->
+		<div class="border border-neutral-300 dark:border-neutral-700 p-4 font-mono text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5">
+			<p class="font-bold text-neutral-900 dark:text-neutral-100">
+				// Transparansi Afiliasi (Shopee Affiliate)
+			</p>
+			<p class="leading-relaxed">
+				Tautan produk di halaman ini mengarah ke Shopee. Jika Anda memutuskan untuk membeli melalui tautan tersebut, saya menerima komisi kecil dari Shopee tanpa biaya tambahan apa pun bagi Anda.
+			</p>
+		</div>
+
+		<!-- Search Bar & Category Filters -->
+		<section class="space-y-3">
+			<div class="space-y-1.5">
+				<label for="shop-search" class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+					Cari Barang
+				</label>
+				<input
+					id="shop-search"
+					type="search"
+					placeholder="[ketik nama barang, kategori, deskripsi...]"
+					autocomplete="off"
+					class="w-full font-mono text-sm border border-neutral-300 dark:border-neutral-800 bg-transparent px-3.5 py-2.5 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+				/>
+			</div>
+
+			<!-- Quick Category Buttons -->
+			<div class="flex flex-wrap gap-2 text-xs font-mono pt-1">
+				{categories.map((cat, idx) => (
+					<button
+						type="button"
+						data-filter-cat={cat}
+						class={`cat-filter-btn px-2.5 py-1 border transition-colors cursor-pointer ${
+							idx === 0
+								? 'border-neutral-900 dark:border-neutral-100 font-semibold bg-neutral-900 text-white dark:bg-white dark:text-black'
+								: 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-black dark:hover:border-white'
+						}`}
+					>
+						{cat}
+					</button>
+				))}
+			</div>
+
+			<!-- Result counter indicator -->
+			<div id="result-status" class="text-xs font-mono text-neutral-400 dark:text-neutral-500 pt-1">
+				Menampilkan {items.length} barang
+			</div>
+		</section>
+
+		<!-- Cards Grid (Tanpa Harga) -->
+		<section class="space-y-4">
+			<div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+				{items.map((item) => (
+					<article
+						class="shop-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-5 flex flex-col justify-between transition-colors space-y-4"
+						data-title={item.data.title.toLowerCase()}
+						data-category={item.data.category.toLowerCase()}
+						data-desc={item.data.description.toLowerCase()}
+					>
+						<div class="space-y-2.5">
+							<div class="flex items-center justify-between text-xs font-mono">
+								<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
+									{item.data.category}
+								</span>
+								<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
+									gear
+								</span>
+							</div>
+
+							<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100">
+								{item.data.title}
+							</h2>
+
+							<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+								{item.data.description}
+							</p>
+						</div>
+
+						<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+							<a
+								href={item.data.shopeeUrl}
+								target="_blank"
+								rel="noopener noreferrer nofollow sponsored"
+								class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 transition-colors"
+							>
+								[cek di shopee &rarr;]
+							</a>
+							<span class="text-[11px] text-neutral-400 dark:text-neutral-500">
+								affiliate
+							</span>
+						</div>
+					</article>
+				))}
+			</div>
+
+			<!-- Empty State -->
+			<div
+				id="no-results"
+				class="hidden p-8 text-center border border-dashed border-neutral-300 dark:border-neutral-800 font-mono text-xs text-neutral-500 dark:text-neutral-400 space-y-1"
+			>
+				<p class="font-bold text-neutral-900 dark:text-neutral-100">
+					[tidak ada barang yang cocok]
+				</p>
+				<p>Coba gunakan kata kunci pencarian yang lain atau pilih kategori "Semua".</p>
+			</div>
+		</section>
+	</div>
+
+	<!-- Live Search & Filter Script -->
+	<script>
+		const searchInput = document.getElementById('shop-search') as HTMLInputElement | null;
+		const cards = document.querySelectorAll<HTMLElement>('.shop-card');
+		const noResults = document.getElementById('no-results');
+		const statusText = document.getElementById('result-status');
+		const filterButtons = document.querySelectorAll<HTMLButtonElement>('.cat-filter-btn');
+
+		let activeCategory = 'Semua';
+
+		function filterItems() {
+			const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+			let visibleCount = 0;
+
+			cards.forEach((card) => {
+				const title = card.getAttribute('data-title') || '';
+				const category = card.getAttribute('data-category') || '';
+				const desc = card.getAttribute('data-desc') || '';
+
+				const matchQuery = !query || title.includes(query) || category.includes(query) || desc.includes(query);
+				const matchCategory = activeCategory === 'Semua' || category === activeCategory.toLowerCase();
+
+				if (matchQuery && matchCategory) {
+					card.style.display = '';
+					visibleCount++;
+				} else {
+					card.style.display = 'none';
+				}
+			});
+
+			if (noResults) {
+				noResults.classList.toggle('hidden', visibleCount > 0);
+			}
+
+			if (statusText) {
+				statusText.textContent = `Menampilkan ${visibleCount} dari ${cards.length} barang`;
+			}
+		}
+
+		searchInput?.addEventListener('input', filterItems);
+
+		filterButtons.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				activeCategory = btn.getAttribute('data-filter-cat') || 'Semua';
+
+				filterButtons.forEach((b) => {
+					const isCurrent = b === btn;
+					b.classList.toggle('bg-neutral-900', isCurrent);
+					b.classList.toggle('text-white', isCurrent);
+					b.classList.toggle('dark:bg-white', isCurrent);
+					b.classList.toggle('dark:text-black', isCurrent);
+					b.classList.toggle('border-neutral-900', isCurrent);
+					b.classList.toggle('dark:border-neutral-100', isCurrent);
+					b.classList.toggle('font-semibold', isCurrent);
+				});
+
+				filterItems();
+			});
+		});
+	</script>
+</BaseLayout>

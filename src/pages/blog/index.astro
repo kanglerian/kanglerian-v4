@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Collect all unique tags
+const allTags = ['semua', ...Array.from(new Set(posts.flatMap((p) => p.data.tags || [])))];
+
+const formatDate = (date: Date) => {
+	return date.toISOString().split('T')[0];
+};
+---
+
+<BaseLayout
+	title="Artikel & Catatan"
+	description="Kumpulan artikel dan tulisan Lerian Febriana seputar software engineering, web performance, dan filosofi minimalis."
+>
+	<div class="space-y-10">
+		<!-- Page Header -->
+		<section class="space-y-2">
+			<div class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+				// Tulisan &amp; Pemikiran
+			</div>
+			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
+				Artikel &amp; Catatan
+			</h1>
+			<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+				Eksplorasi teknis, catatan arsitektur sistem, serta refleksi tentang pengembangan perangkat lunak yang ringkas dan bebas distraksi.
+			</p>
+		</section>
+
+		<!-- Search Bar & Tag Filters -->
+		<section class="space-y-3">
+			<div class="space-y-1.5">
+				<label for="blog-search" class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
+					Cari Artikel
+				</label>
+				<input
+					id="blog-search"
+					type="search"
+					placeholder="[ketik judul, topik, atau kata kunci...]"
+					autocomplete="off"
+					class="w-full font-mono text-sm border border-neutral-300 dark:border-neutral-800 bg-transparent px-3.5 py-2.5 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
+				/>
+			</div>
+
+			<!-- Quick Tag Buttons -->
+			{allTags.length > 1 && (
+				<div class="flex flex-wrap gap-2 text-xs font-mono pt-1">
+					{allTags.map((tag, idx) => (
+						<button
+							type="button"
+							data-tag-filter={tag}
+							class={`tag-filter-btn px-2.5 py-1 border transition-colors cursor-pointer ${
+								idx === 0
+									? 'border-neutral-900 dark:border-neutral-100 font-semibold bg-neutral-900 text-white dark:bg-white dark:text-black'
+									: 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-black dark:hover:border-white'
+							}`}
+						>
+							#{tag}
+						</button>
+					))}
+				</div>
+			)}
+
+			<!-- Status line -->
+			<div id="blog-status" class="text-xs font-mono text-neutral-400 dark:text-neutral-500 pt-1">
+				Menampilkan {posts.length} artikel
+			</div>
+		</section>
+
+		<!-- Posts Container -->
+		<section class="space-y-6">
+			{posts.length === 0 ? (
+				<p class="text-sm font-mono text-neutral-500">Belum ada artikel yang diterbitkan.</p>
+			) : (
+				<div id="blog-posts-list" class="divide-y divide-neutral-200 dark:divide-neutral-800">
+					{posts.map((post) => (
+						<article
+							class="blog-item py-6 first:pt-0 last:pb-0 space-y-2.5"
+							data-title={post.data.title.toLowerCase()}
+							data-desc={post.data.description.toLowerCase()}
+							data-tags={(post.data.tags || []).join(',').toLowerCase()}
+						>
+							<div class="flex items-center gap-3 text-xs font-mono text-neutral-500 dark:text-neutral-400">
+								<time datetime={post.data.pubDate.toISOString()}>
+									{formatDate(post.data.pubDate)}
+								</time>
+								{post.data.tags && post.data.tags.length > 0 && (
+									<span>&bull;</span>
+									<div class="flex gap-1.5 flex-wrap">
+										{post.data.tags.map((tag) => (
+											<span class="text-neutral-500 dark:text-neutral-400">
+												#{tag}
+											</span>
+										))}
+									</div>
+								)}
+							</div>
+
+							<h2 class="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+								<a
+									href={`/blog/${post.id}`}
+									class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white transition-colors"
+								>
+									{post.data.title}
+								</a>
+							</h2>
+
+							<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+								{post.data.description}
+							</p>
+
+							<div class="pt-1">
+								<a
+									href={`/blog/${post.id}`}
+									class="text-xs font-mono text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+								>
+									[baca selengkapnya &rarr;]
+								</a>
+							</div>
+						</article>
+					))}
+				</div>
+			)}
+
+			<!-- Empty State -->
+			<div
+				id="no-posts"
+				class="hidden p-8 text-center border border-dashed border-neutral-300 dark:border-neutral-800 font-mono text-xs text-neutral-500 dark:text-neutral-400 space-y-1"
+			>
+				<p class="font-bold text-neutral-900 dark:text-neutral-100">
+					[tidak ada artikel yang cocok]
+				</p>
+				<p>Coba gunakan kata kunci pencarian yang lain atau pilih topik "#semua".</p>
+			</div>
+
+			<!-- Pagination Controls -->
+			<div
+				id="pagination-container"
+				class="pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono"
+			>
+				<div class="flex items-center gap-2">
+					<button
+						id="prev-btn"
+						type="button"
+						class="border border-neutral-300 dark:border-neutral-700 px-3 py-1.5 hover:border-black dark:hover:border-white disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+					>
+						&larr; [sebelumnya]
+					</button>
+					<button
+						id="next-btn"
+						type="button"
+						class="border border-neutral-300 dark:border-neutral-700 px-3 py-1.5 hover:border-black dark:hover:border-white disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+					>
+						[selanjutnya] &rarr;
+					</button>
+				</div>
+
+				<!-- Page Numbers -->
+				<div id="page-numbers" class="flex items-center gap-1.5">
+					<!-- Dynamically rendered page buttons -->
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<!-- Pagination and Live Search Script -->
+	<script>
+		const searchInput = document.getElementById('blog-search') as HTMLInputElement | null;
+		const items = Array.from(document.querySelectorAll<HTMLElement>('.blog-item'));
+		const noPosts = document.getElementById('no-posts');
+		const statusText = document.getElementById('blog-status');
+		const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement | null;
+		const nextBtn = document.getElementById('next-btn') as HTMLButtonElement | null;
+		const pageNumbersContainer = document.getElementById('page-numbers');
+		const paginationContainer = document.getElementById('pagination-container');
+		const tagButtons = document.querySelectorAll<HTMLButtonElement>('.tag-filter-btn');
+
+		const PAGE_SIZE = 4; // 4 artikel per halaman
+		let currentPage = 1;
+		let activeTag = 'semua';
+		let filteredItems = [...items];
+
+		function applyFilter() {
+			const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+			filteredItems = items.filter((item) => {
+				const title = item.getAttribute('data-title') || '';
+				const desc = item.getAttribute('data-desc') || '';
+				const tags = item.getAttribute('data-tags') || '';
+
+				const matchQuery = !query || title.includes(query) || desc.includes(query) || tags.includes(query);
+				const matchTag = activeTag === 'semua' || tags.split(',').includes(activeTag.toLowerCase());
+
+				return matchQuery && matchTag;
+			});
+
+			currentPage = 1;
+			renderPage();
+		}
+
+		function renderPage() {
+			const totalItems = filteredItems.length;
+			const totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
+
+			if (currentPage > totalPages) currentPage = totalPages;
+			if (currentPage < 1) currentPage = 1;
+
+			// Hide all items first
+			items.forEach((item) => {
+				item.style.display = 'none';
+			});
+
+			// Show items for current page
+			const startIndex = (currentPage - 1) * PAGE_SIZE;
+			const endIndex = startIndex + PAGE_SIZE;
+			const pageItems = filteredItems.slice(startIndex, endIndex);
+
+			pageItems.forEach((item) => {
+				item.style.display = '';
+			});
+
+			// Handle empty state
+			if (noPosts) {
+				noPosts.classList.toggle('hidden', totalItems > 0);
+			}
+
+			// Update status text
+			if (statusText) {
+				if (totalItems === 0) {
+					statusText.textContent = 'Tidak ada artikel yang ditemukan';
+				} else {
+					statusText.textContent = `Menampilkan ${startIndex + 1}–${Math.min(endIndex, totalItems)} dari ${totalItems} artikel (Halaman ${currentPage} dari ${totalPages})`;
+				}
+			}
+
+			// Update Pagination Controls
+			if (paginationContainer) {
+				paginationContainer.style.display = totalPages <= 1 ? 'none' : 'flex';
+			}
+
+			if (prevBtn) prevBtn.disabled = currentPage === 1;
+			if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+
+			// Render Page Numbers Buttons
+			if (pageNumbersContainer) {
+				pageNumbersContainer.innerHTML = '';
+				for (let i = 1; i <= totalPages; i++) {
+					const btn = document.createElement('button');
+					btn.type = 'button';
+					btn.textContent = `[${i}]`;
+					btn.className = `px-2 py-1 border transition-colors cursor-pointer ${
+						i === currentPage
+							? 'border-neutral-900 dark:border-neutral-100 font-semibold bg-neutral-900 text-white dark:bg-white dark:text-black'
+							: 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-black dark:hover:border-white'
+					}`;
+					btn.addEventListener('click', () => {
+						currentPage = i;
+						renderPage();
+						window.scrollTo({ top: 0, behavior: 'smooth' });
+					});
+					pageNumbersContainer.appendChild(btn);
+				}
+			}
+		}
+
+		// Event Listeners
+		searchInput?.addEventListener('input', applyFilter);
+
+		prevBtn?.addEventListener('click', () => {
+			if (currentPage > 1) {
+				currentPage--;
+				renderPage();
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		});
+
+		nextBtn?.addEventListener('click', () => {
+			const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
+			if (currentPage < totalPages) {
+				currentPage++;
+				renderPage();
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		});
+
+		tagButtons.forEach((btn) => {
+			btn.addEventListener('click', () => {
+				activeTag = btn.getAttribute('data-tag-filter') || 'semua';
+
+				tagButtons.forEach((b) => {
+					const isCurrent = b === btn;
+					b.classList.toggle('bg-neutral-900', isCurrent);
+					b.classList.toggle('text-white', isCurrent);
+					b.classList.toggle('dark:bg-white', isCurrent);
+					b.classList.toggle('dark:text-black', isCurrent);
+					b.classList.toggle('border-neutral-900', isCurrent);
+					b.classList.toggle('dark:border-neutral-100', isCurrent);
+					b.classList.toggle('font-semibold', isCurrent);
+				});
+
+				applyFilter();
+			});
+		});
+
+		// Initial Run
+		applyFilter();
+	</script>
+</BaseLayout>
