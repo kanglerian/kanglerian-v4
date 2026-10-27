@@ -1,15 +1,15 @@
 ---
-title: "Fundamental Arsitektur Backend API Bersih & Ringkas"
-description: "Mendesain REST API yang modular, mudah diuji, dan tidak overengineered menggunakan Node.js dan TypeScript."
+title: "Adipiscing Elit Sed Do Eiusmod Tempor"
+description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 duration: "24:10"
-category: "Backend Engineering"
-tags: ["backend", "nodejs", "architecture"]
+category: "Dolor Sit"
+tags: ["amet", "consectetur", "adipiscing"]
 pubDate: 2026-10-20
 featured: true
 ---
 
-Topik yang dibahas:
-- Struktur folder domain-driven sederhana.
-- Validasi data request dengan Zod.
-- Error handling terpusat tanpa try-catch bersarang.
+Duis aute irure dolor in reprehenderit in voluptate:
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+- Ut enim ad minim veniam, quis nostrud exercitation.

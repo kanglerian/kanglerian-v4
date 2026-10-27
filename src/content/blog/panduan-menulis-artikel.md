@@ -1,26 +1,17 @@
 ---
-title: "Cara Menambah Tulisan Baru di Website Ini"
-description: "Panduan praktis membuat artikel baru menggunakan format Markdown (.md) tanpa perlu utak-atik kode program."
+title: "Lorem Ipsum Dolor Sit Amet Consectetur"
+description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 pubDate: 2026-10-26
-tags: ["tutorial", "markdown", "panduan"]
+tags: ["lorem", "ipsum", "dolor"]
 draft: false
 ---
 
-Untuk membuat artikel baru di website ini, Anda cukup membuat file berekstensi `.md` di dalam folder `src/content/blog/`.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-Contoh frontmatter yang perlu diisi di bagian paling atas file:
+## Consectetur Adipiscing Elit
 
-```markdown
----
-title: "Judul Tulisan Anda"
-description: "Deskripsi singkat mengenai isi tulisan untuk SEO Google."
-pubDate: 2026-10-26
-tags: ["topik1", "topik2"]
-draft: false
----
-```
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Tulis isi artikel dengan sintaks Markdown standar. Astro akan otomatis:
-- Membuat URL halaman baru sesuai nama file.
-- Menambahkan tulisan ke daftar arsip artikel di `/blog`.
-- Mengatur SEO, Open Graph, dan JSON-LD.
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+- Ut enim ad minim veniam, quis nostrud exercitation ullamco.

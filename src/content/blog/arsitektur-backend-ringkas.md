@@ -1,20 +1,20 @@
 ---
-title: "Arsitektur Backend Ringkas: Menghindari Overengineering"
-description: "Pelajaran praktis membangun backend yang mudah dirawat dengan menghindari kompleksitas arsitektur yang belum dibutuhkan."
-pubDate: 2026-10-24
-tags: ["backend", "architecture", "software-design"]
+title: "Sed Do Eiusmod Tempor Incididunt Ut Labore"
+description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+pubDate: 2026-10-25
+tags: ["amet", "consectetur", "adipiscing"]
 draft: false
 ---
 
-Banyak pengembang terjebak dalam perangkap *premature optimization* dan *overengineering*: membagi aplikasi menjadi belasan microservices sebelum memiliki satu pun pengguna aktif.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-## Prinsip Kesederhanaan
+## Ut Enim Ad Minim Veniam
 
-1. **Mulai dari Modular Monolith**  
-   Monolith yang dirancang dengan modul-modul terisolasi jauh lebih mudah di-debug, di-deploy, dan diuji daripada arsitektur terdistribusi.
+1. **Quis Nostrud Exercitation**  
+   Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
 
-2. **Ketergantungan Minimal**  
-   Gunakan library standar sesering mungkin. Setiap penambahan library pihak ketiga adalah utang pemeliharaan masa depan.
+2. **Excepteur Sint Occaecat**  
+   Cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-3. **Database Relasional Terbukti**  
-   PostgreSQL atau SQLite seringkali cukup untuk 95% kebutuhan aplikasi tanpa perlu menambahkan sistem caching kompleks di awal.
+3. **Sed Ut Perspiciatis Unde**  
+   Omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.

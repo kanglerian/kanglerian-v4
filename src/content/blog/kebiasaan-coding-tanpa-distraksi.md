@@ -1,15 +1,11 @@
 ---
-title: "Kebiasaan Menulis Kode Tanpa Distraksi"
-description: "Membangun deep work dalam rekayasa software dengan mematikan notifikasi, single-tasking, dan menulis catatan harian."
-pubDate: 2026-10-22
-tags: ["productivity", "mindset", "minimalism"]
+title: "Excepteur Sint Occaecat Cupidatat Non Proident"
+description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+pubDate: 2026-10-23
+tags: ["lorem", "tempor", "dolor"]
 draft: false
 ---
 
-Dunia kerja software dipenuhi oleh notifikasi chat, email, dan meeting yang memecah konsentrasi. Untuk memecahkan masalah komputasi yang rumit, kita membutuhkan blok waktu tanpa gangguan (*deep work*).
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
-## Langkah Sederhana
-
-1. Matikan notifikasi chat saat sedang memprogram logika inti.
-2. Selesaikan satu fungsi sebelum beralih ke tugas lain.
-3. Catat langkah yang telah dikerjakan di akhir hari kerja.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.

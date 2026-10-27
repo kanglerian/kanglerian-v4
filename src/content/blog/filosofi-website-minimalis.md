@@ -1,25 +1,11 @@
 ---
-title: "Filosofi Website Minimalis: Esensi Tanpa Distraksi"
-description: "Catatan mengenai kesederhanaan radikal dalam desain antarmuka, monokrom hitam-putih, dan kekuatan tipografi murni."
-pubDate: 2026-10-25
-tags: ["minimalism", "design", "philosophy"]
+title: "Duis Aute Irure Dolor In Reprehenderit"
+description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+pubDate: 2026-10-24
+tags: ["elit", "tempor", "incididunt"]
 draft: false
 ---
 
-Desain yang baik bukan saat tidak ada lagi yang bisa ditambahkan, melainkan saat tidak ada lagi yang bisa dikurangi.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
-## Menghilangkan yang Tidak Perlu
-
-Banyak situs web modern dipenuhi oleh:
-- Popup newsletter yang agresif.
-- Gambar banner berukuran raksasa yang tidak informatif.
-- Ratusan icon warna-warni yang mengalihkan perhatian dari pesan utama.
-- Pelacak (trackers) yang memperlambat browser.
-
-Ketika semua elemen tersebut dihilangkan, yang tersisa hanyalah **ide, struktur, dan kata-kata**.
-
-## Kekuatan Hitam dan Putih
-
-Warna monokrom memusatkan perhatian pada kontras, hierarki ruang (whitespace), dan ketepatan tipografi. Pembaca tidak terdistraksi oleh dekorasi visual dan dapat fokus menyerap informasi secara mendalam.
-
-Perpaduan antara font **Sans-Serif** untuk kemudahan membaca paragraf dan font **Monospace** untuk ketegasan data teknis menciptakan identitas yang kuat, fungsional, dan abadi (*timeless*).
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

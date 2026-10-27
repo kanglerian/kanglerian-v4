@@ -26,20 +26,6 @@ const portfolio = defineCollection({
 	}),
 });
 
-const shop = defineCollection({
-	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/shop' }),
-	schema: z.object({
-		title: z.string(),
-		code: z.string().optional(),
-		category: z.string().default('Umum'),
-		description: z.string(),
-		image: z.string().optional(),
-		price: z.string().optional(),
-		shopeeUrl: z.string().url(),
-		featured: z.boolean().optional().default(false),
-	}),
-});
-
 const tutorials = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/tutorials' }),
 	schema: z.object({
@@ -56,4 +42,4 @@ const tutorials = defineCollection({
 	}),
 });
 
-export const collections = { blog, portfolio, shop, tutorials };
+export const collections = { blog, portfolio, tutorials };

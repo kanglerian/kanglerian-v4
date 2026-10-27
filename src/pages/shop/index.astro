@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const items = await getCollection('shop');
-const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data.category)))];
+import { shopItems as items } from '../../content/shop/data.js';
 ---
 
 <BaseLayout
@@ -24,7 +21,7 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 			</p>
 		</section>
 
-		<!-- Search Bar & Category Filters -->
+		<!-- Search Bar -->
 		<section class="space-y-3">
 			<div class="space-y-1.5">
 				<label for="shop-search" class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
@@ -33,27 +30,10 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 				<input
 					id="shop-search"
 					type="search"
-					placeholder="[ketik nama barang, kategori, deskripsi...]"
+					placeholder="[ketik nama barang atau deskripsi...]"
 					autocomplete="off"
 					class="w-full font-mono text-sm border border-neutral-300 dark:border-neutral-800 bg-transparent px-3.5 py-2.5 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 focus:outline-none focus:border-black dark:focus:border-white transition-colors"
 				/>
-			</div>
-
-			<!-- Quick Category Buttons -->
-			<div class="flex flex-wrap gap-2 text-xs font-mono pt-1">
-				{categories.map((cat, idx) => (
-					<button
-						type="button"
-						data-filter-cat={cat}
-						class={`cat-filter-btn px-2.5 py-1 border transition-colors cursor-pointer ${
-							idx === 0
-								? 'border-neutral-900 dark:border-neutral-100 font-semibold bg-neutral-900 text-white dark:bg-white dark:text-black'
-								: 'border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:border-black dark:hover:border-white'
-						}`}
-					>
-						{cat}
-					</button>
-				))}
 			</div>
 
 			<!-- Result counter indicator -->
@@ -64,27 +44,25 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 
 		<!-- Cards Grid (Dengan Cover Gambar) -->
 		<section class="space-y-4">
-			<div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+			<div id="shop-grid" class="grid grid-cols-2 sm:grid-cols-6 gap-4">
 				{items.map((item) => (
 					<article
 						class="shop-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white flex flex-col justify-between transition-colors group overflow-hidden"
-						data-title={item.data.title.toLowerCase()}
-						data-code={(item.data.code || '').toLowerCase()}
-						data-category={item.data.category.toLowerCase()}
-						data-desc={item.data.description.toLowerCase()}
+						data-title={item.title.toLowerCase()}
+						data-desc={item.description.toLowerCase()}
 					>
 						<div>
 							<!-- Cover Barang (1:1) -->
 							<a
-								href={item.data.shopeeUrl}
+								href={item.url}
 								target="_blank"
 								rel="noopener noreferrer"
 								class="block aspect-square w-full overflow-hidden border-b border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 relative"
 							>
-								{item.data.image ? (
+								{item.image ? (
 									<img
-										src={item.data.image}
-										alt={item.data.title}
+										src={item.image}
+										alt={item.title}
 										loading="lazy"
 										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
 									/>
@@ -96,38 +74,20 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 							</a>
 
 							<div class="p-4 space-y-2">
-								<div class="flex items-center justify-between text-xs font-mono">
-									<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
-										{item.data.category}
-									</span>
-									<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
-										{item.data.code ? `#${item.data.code}` : 'katalog'}
-									</span>
-								</div>
-
 								<h2 class="text-sm sm:text-base font-bold text-neutral-900 dark:text-neutral-100">
-									{item.data.title}
+									{item.title}
 								</h2>
 
 								<p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-									{item.data.description}
+									{item.description}
 								</p>
 							</div>
 						</div>
 
 						<div class="px-4 pb-4">
-							<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
-								{item.data.price ? (
-									<span class="text-neutral-700 dark:text-neutral-300 font-semibold">
-										{item.data.price}
-									</span>
-								) : (
-									<span class="text-neutral-400 dark:text-neutral-500">
-										katalog
-									</span>
-								)}
+							<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-end text-xs font-mono">
 								<a
-									href={item.data.shopeeUrl}
+									href={item.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 transition-colors"
@@ -148,20 +108,17 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 				<p class="font-bold text-neutral-900 dark:text-neutral-100">
 					[tidak ada barang yang cocok]
 				</p>
-				<p>Coba gunakan kata kunci pencarian yang lain atau pilih kategori "Semua".</p>
+				<p>Coba gunakan kata kunci pencarian yang lain.</p>
 			</div>
 		</section>
 	</div>
 
-	<!-- Live Search & Filter Script -->
+	<!-- Live Search Script -->
 	<script>
 		const searchInput = document.getElementById('shop-search') as HTMLInputElement | null;
 		const cards = document.querySelectorAll<HTMLElement>('.shop-card');
 		const noResults = document.getElementById('no-results');
 		const statusText = document.getElementById('result-status');
-		const filterButtons = document.querySelectorAll<HTMLButtonElement>('.cat-filter-btn');
-
-		let activeCategory = 'Semua';
 
 		function filterItems() {
 			const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
@@ -169,14 +126,11 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 
 			cards.forEach((card) => {
 				const title = card.getAttribute('data-title') || '';
-				const code = card.getAttribute('data-code') || '';
-				const category = card.getAttribute('data-category') || '';
 				const desc = card.getAttribute('data-desc') || '';
 
-				const matchQuery = !query || title.includes(query) || code.includes(query) || category.includes(query) || desc.includes(query);
-				const matchCategory = activeCategory === 'Semua' || category === activeCategory.toLowerCase();
+				const matchQuery = !query || title.includes(query) || desc.includes(query);
 
-				if (matchQuery && matchCategory) {
+				if (matchQuery) {
 					card.style.display = '';
 					visibleCount++;
 				} else {
@@ -194,24 +148,5 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 		}
 
 		searchInput?.addEventListener('input', filterItems);
-
-		filterButtons.forEach((btn) => {
-			btn.addEventListener('click', () => {
-				activeCategory = btn.getAttribute('data-filter-cat') || 'Semua';
-
-				filterButtons.forEach((b) => {
-					const isCurrent = b === btn;
-					b.classList.toggle('bg-neutral-900', isCurrent);
-					b.classList.toggle('text-white', isCurrent);
-					b.classList.toggle('dark:bg-white', isCurrent);
-					b.classList.toggle('dark:text-black', isCurrent);
-					b.classList.toggle('border-neutral-900', isCurrent);
-					b.classList.toggle('dark:border-neutral-100', isCurrent);
-					b.classList.toggle('font-semibold', isCurrent);
-				});
-
-				filterItems();
-			});
-		});
 	</script>
 </BaseLayout>
