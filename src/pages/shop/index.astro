@@ -72,47 +72,73 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 			</div>
 		</section>
 
-		<!-- Cards Grid (Tanpa Harga) -->
+		<!-- Cards Grid (Dengan Cover Gambar) -->
 		<section class="space-y-4">
 			<div id="shop-grid" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
 				{items.map((item) => (
 					<article
-						class="shop-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-5 flex flex-col justify-between transition-colors space-y-4"
+						class="shop-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white flex flex-col justify-between transition-colors group overflow-hidden"
 						data-title={item.data.title.toLowerCase()}
+						data-code={(item.data.code || '').toLowerCase()}
 						data-category={item.data.category.toLowerCase()}
 						data-desc={item.data.description.toLowerCase()}
 					>
-						<div class="space-y-2.5">
-							<div class="flex items-center justify-between text-xs font-mono">
-								<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
-									{item.data.category}
-								</span>
-								<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
-									gear
-								</span>
-							</div>
-
-							<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100">
-								{item.data.title}
-							</h2>
-
-							<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-								{item.data.description}
-							</p>
-						</div>
-
-						<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+						<div>
+							<!-- Cover Barang -->
 							<a
 								href={item.data.shopeeUrl}
 								target="_blank"
 								rel="noopener noreferrer nofollow sponsored"
-								class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 transition-colors"
+								class="block aspect-video w-full overflow-hidden border-b border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 relative"
 							>
-								[cek di shopee &rarr;]
+								{item.data.image ? (
+									<img
+										src={item.data.image}
+										alt={item.data.title}
+										loading="lazy"
+										class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+									/>
+								) : (
+									<div class="w-full h-full flex items-center justify-center font-mono text-xs text-neutral-400 dark:text-neutral-600">
+										[tanpa cover]
+									</div>
+								)}
 							</a>
-							<span class="text-[11px] text-neutral-400 dark:text-neutral-500">
-								affiliate
-							</span>
+
+							<div class="p-5 space-y-2.5">
+								<div class="flex items-center justify-between text-xs font-mono">
+									<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
+										{item.data.category}
+									</span>
+									<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
+										{item.data.code ? `#${item.data.code}` : 'gear'}
+									</span>
+								</div>
+
+								<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100">
+									{item.data.title}
+								</h2>
+
+								<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+									{item.data.description}
+								</p>
+							</div>
+						</div>
+
+						<div class="px-5 pb-5">
+							<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+								<a
+									href={item.data.shopeeUrl}
+									target="_blank"
+									rel="noopener noreferrer nofollow sponsored"
+									class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 transition-colors"
+								>
+									[cek di shopee &rarr;]
+								</a>
+								<span class="text-[11px] text-neutral-400 dark:text-neutral-500">
+									affiliate
+								</span>
+							</div>
 						</div>
 					</article>
 				))}
@@ -147,10 +173,11 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 
 			cards.forEach((card) => {
 				const title = card.getAttribute('data-title') || '';
+				const code = card.getAttribute('data-code') || '';
 				const category = card.getAttribute('data-category') || '';
 				const desc = card.getAttribute('data-desc') || '';
 
-				const matchQuery = !query || title.includes(query) || category.includes(query) || desc.includes(query);
+				const matchQuery = !query || title.includes(query) || code.includes(query) || category.includes(query) || desc.includes(query);
 				const matchCategory = activeCategory === 'Semua' || category === activeCategory.toLowerCase();
 
 				if (matchQuery && matchCategory) {

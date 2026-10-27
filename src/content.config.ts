@@ -30,8 +30,10 @@ const shop = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/shop' }),
 	schema: z.object({
 		title: z.string(),
+		code: z.string().optional(),
 		category: z.string().default('Umum'),
 		description: z.string(),
+		image: z.string().optional(),
 		price: z.string().optional(),
 		shopeeUrl: z.string().url(),
 		featured: z.boolean().optional().default(false),
@@ -43,7 +45,9 @@ const tutorials = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
-		youtubeUrl: z.string().url(),
+		youtubeUrl: z.string().optional(),
+		youtubeEmbed: z.string().optional(),
+		image: z.string().optional(),
 		duration: z.string().optional(),
 		category: z.string().default('Teknologi'),
 		tags: z.array(z.string()).optional().default([]),

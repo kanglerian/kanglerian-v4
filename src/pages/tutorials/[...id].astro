@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { getYoutubeEmbedUrl, getYoutubeWatchUrl } from '../../utils/youtube';
 
 export async function getStaticPaths() {
 	const tutorials = await getCollection('tutorials');
@@ -12,6 +13,9 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
+const rawYoutube = item.data.youtubeEmbed || item.data.youtubeUrl;
+const embedUrl = getYoutubeEmbedUrl(rawYoutube);
+const watchUrl = getYoutubeWatchUrl(rawYoutube);
 ---
 
 <BaseLayout
@@ -48,16 +52,32 @@ const { Content } = await render(item);
 				{item.data.description}
 			</p>
 
+			<!-- YouTube Video Embed -->
+			{embedUrl && (
+				<div class="pt-2">
+					<div class="aspect-video w-full max-w-4xl border border-neutral-300 dark:border-neutral-800 bg-neutral-900 overflow-hidden">
+						<iframe
+							src={embedUrl}
+							title={item.data.title}
+							class="w-full h-full border-0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							allowfullscreen
+							loading="lazy"
+						></iframe>
+					</div>
+				</div>
+			)}
+
 			<!-- Action YouTube Link -->
 			<div class="pt-2">
 				<a
-					href={item.data.youtubeUrl}
+					href={watchUrl}
 					target="_blank"
 					rel="noopener noreferrer"
 					class="inline-flex items-center gap-2 border border-neutral-300 dark:border-neutral-700 hover:border-black dark:hover:border-white px-4 py-2 text-xs font-mono font-semibold transition-colors text-neutral-900 dark:text-neutral-100"
 				>
 					<i class="fa-brands fa-youtube text-base"></i>
-					<span>[Tonton Video di YouTube &rarr;]</span>
+					<span>[Buka di YouTube &rarr;]</span>
 				</a>
 			</div>
 		</header>

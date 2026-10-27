@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import {
+	getYoutubeEmbedUrl,
+	getYoutubeThumbnail,
+	getYoutubeWatchUrl,
+} from '../../utils/youtube';
 
 const tutorials = await getCollection('tutorials');
 tutorials.sort((a, b) => {
@@ -74,71 +79,121 @@ const categories = ['Semua', ...Array.from(new Set(tutorials.map((t) => t.data.c
 				<p class="text-sm font-mono text-neutral-500">Belum ada tutorial yang ditambahkan.</p>
 			) : (
 				<div id="tutorials-grid" class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-					{tutorials.map((item) => (
-						<article
-							class="tutorial-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white p-5 flex flex-col justify-between transition-colors space-y-4 group"
-							data-title={item.data.title.toLowerCase()}
-							data-category={item.data.category.toLowerCase()}
-							data-desc={item.data.description.toLowerCase()}
-						>
-							<div class="space-y-2.5">
-								<div class="flex items-center justify-between text-xs font-mono">
-									<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
-										{item.data.category}
-									</span>
-									{item.data.duration && (
-										<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
-											durasi: {item.data.duration}
-										</span>
-									)}
-								</div>
+					{tutorials.map((item) => {
+						const rawYoutube = item.data.youtubeEmbed || item.data.youtubeUrl;
+						const embedUrl = getYoutubeEmbedUrl(rawYoutube);
+						const watchUrl = getYoutubeWatchUrl(rawYoutube);
+						const coverUrl = item.data.image || getYoutubeThumbnail(rawYoutube);
 
-								<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4 decoration-neutral-400">
-									<a
-										href={item.data.youtubeUrl}
-										target="_blank"
-										rel="noopener noreferrer"
+						return (
+							<article
+								class="tutorial-card border border-neutral-300 dark:border-neutral-800 hover:border-black dark:hover:border-white flex flex-col justify-between transition-colors group overflow-hidden"
+								data-title={item.data.title.toLowerCase()}
+								data-category={item.data.category.toLowerCase()}
+								data-desc={item.data.description.toLowerCase()}
+							>
+								<div>
+									<!-- YouTube Cover / Embed -->
+									<div
+										class="yt-embed-container aspect-video w-full overflow-hidden border-b border-neutral-300 dark:border-neutral-800 bg-neutral-900 relative"
+										data-embed-url={embedUrl || ''}
+										data-title={item.data.title}
 									>
-										{item.data.title}
-									</a>
-								</h2>
-
-								<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-									{item.data.description}
-								</p>
-							</div>
-
-							<div class="space-y-3 pt-2">
-								{item.data.tags && item.data.tags.length > 0 && (
-									<div class="flex flex-wrap gap-1 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
-										{item.data.tags.map((tag) => (
-											<span class="border border-neutral-200 dark:border-neutral-800 px-1.5 py-0.5">
-												#{tag}
-											</span>
-										))}
+										{coverUrl ? (
+											<button
+												type="button"
+												class="yt-play-trigger w-full h-full relative block cursor-pointer group/yt text-left"
+												aria-label={`Putar video ${item.data.title}`}
+											>
+												<img
+													src={coverUrl}
+													alt={item.data.title}
+													loading="lazy"
+													class="w-full h-full object-cover opacity-90 group-hover/yt:scale-105 group-hover/yt:opacity-100 transition-all duration-300"
+												/>
+												<div class="absolute inset-0 bg-black/25 group-hover/yt:bg-black/10 transition-colors flex items-center justify-center">
+													<span class="w-11 h-8 bg-black/80 border border-white/80 text-white flex items-center justify-center group-hover/yt:bg-red-600 group-hover/yt:border-red-600 transition-colors">
+														<i class="fa-solid fa-play text-xs ml-0.5"></i>
+													</span>
+												</div>
+												{item.data.duration && (
+													<span class="absolute bottom-2 right-2 bg-black/85 text-white font-mono text-[10px] px-1.5 py-0.5 border border-neutral-700">
+														{item.data.duration}
+													</span>
+												)}
+											</button>
+										) : embedUrl ? (
+											<iframe
+												src={embedUrl}
+												title={item.data.title}
+												class="w-full h-full border-0"
+												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+												allowfullscreen
+												loading="lazy"
+											></iframe>
+										) : (
+											<div class="w-full h-full flex items-center justify-center font-mono text-xs text-neutral-500">
+												[tanpa video]
+											</div>
+										)}
 									</div>
-								)}
 
-								<div class="pt-2 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
-									<a
-										href={item.data.youtubeUrl}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-1.5"
-									>
-										<i class="fa-brands fa-youtube text-sm"></i>
-										<span>[tonton di youtube &rarr;]</span>
-									</a>
-									<a
-										href={`/tutorials/${item.id}`}
-										class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
-									>
-										catatan
-									</a>
+									<div class="p-5 space-y-2.5">
+										<div class="flex items-center justify-between text-xs font-mono">
+											<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
+												{item.data.category}
+											</span>
+											{item.data.duration && (
+												<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
+													{item.data.duration}
+												</span>
+											)}
+										</div>
+
+										<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-4 decoration-neutral-400">
+											<a href={`/tutorials/${item.id}`}>
+												{item.data.title}
+											</a>
+										</h2>
+
+										<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+											{item.data.description}
+										</p>
+									</div>
 								</div>
-							</div>
-						</article>
-					))}
+
+								<div class="px-5 pb-5 space-y-3">
+									{item.data.tags && item.data.tags.length > 0 && (
+										<div class="flex flex-wrap gap-1 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+											{item.data.tags.map((tag) => (
+												<span class="border border-neutral-200 dark:border-neutral-800 px-1.5 py-0.5">
+													#{tag}
+												</span>
+											))}
+										</div>
+									)}
+
+									<div class="pt-2 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+										<a
+											href={watchUrl}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-1.5"
+										>
+											<i class="fa-brands fa-youtube text-sm"></i>
+											<span>[youtube &rarr;]</span>
+										</a>
+										<a
+											href={`/tutorials/${item.id}`}
+											class="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white underline underline-offset-2"
+										>
+											[catatan &rarr;]
+										</a>
+									</div>
+								</div>
+							</article>
+						);
+					})}
 				</div>
 			)}
 
@@ -212,6 +267,26 @@ const categories = ['Semua', ...Array.from(new Set(tutorials.map((t) => t.data.c
 				});
 
 				filterTutorials();
+			});
+		});
+
+		// Klik cover YouTube untuk langsung memutar embed video di dalam kartu
+		document.querySelectorAll<HTMLButtonElement>('.yt-play-trigger').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const container = btn.closest<HTMLElement>('.yt-embed-container');
+				const embedUrl = container?.getAttribute('data-embed-url');
+				const title = container?.getAttribute('data-title') || 'YouTube Video';
+				if (container && embedUrl) {
+					const iframe = document.createElement('iframe');
+					iframe.src = `${embedUrl}?autoplay=1`;
+					iframe.title = title;
+					iframe.className = 'w-full h-full border-0';
+					iframe.allow =
+						'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+					iframe.allowFullscreen = true;
+					container.innerHTML = '';
+					container.appendChild(iframe);
+				}
 			});
 		});
 	</script>
