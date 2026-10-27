@@ -1,23 +1,18 @@
 export const links = [
 	{
-		title: 'Lorem Ipsum Dolor',
-		description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor.',
-		url: 'https://forms.google.com',
+		title: 'Log Pengelolaan Infrastruktur Multi-Server dan Virtualisasi Proxmox',
+		description: 'Formulir ini digunakan untuk mencatat pengelolaan infrastruktur multi-server dan virtualisasi Proxmox. Silakan isi dengan informasi yang relevan terkait pengelolaan server dan virtualisasi.',
+		url: 'https://forms.gle/Y7AdbcFomhxgjR3t6',
 	},
 	{
-		title: 'Consectetur Adipiscing',
-		description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
-		url: 'https://github.com/kanglerian',
+		title: 'Log Pemeliharaan Aplikasi, Website, dan Konfigurasi Domain',
+		description: 'Formulir ini digunakan untuk mencatat pemeliharaan aplikasi, website, dan konfigurasi domain. Silakan isi dengan informasi yang relevan terkait pemeliharaan aplikasi, website, dan konfigurasi domain.',
+		url: 'https://forms.gle/hBuFfwQbke8dVYbY7',
 	},
 	{
-		title: 'Sed Do Eiusmod Tempor',
-		description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
-		url: 'https://example.com',
-	},
-	{
-		title: 'Ut Labore Et Dolore',
-		description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.',
-		url: 'https://example.com',
+		title: 'Log Pencadangan dan Pemulihan Data',
+		description: 'Formulir ini digunakan untuk mencatat pencadangan dan pemulihan data. Silakan isi dengan informasi yang relevan terkait pencadangan dan pemulihan data.',
+		url: 'https://forms.gle/MLLbEi3mi6garnEHA',
 	},
 ];
 
