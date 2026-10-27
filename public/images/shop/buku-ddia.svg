@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" fill="none">
-  <rect width="600" height="400" fill="#171717"/>
-  <rect x="24" y="24" width="552" height="352" stroke="#404040" stroke-width="1.5" stroke-dasharray="4 4"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" fill="none">
+  <rect width="600" height="600" fill="#171717"/>
+  <rect x="32" y="32" width="536" height="536" stroke="#404040" stroke-width="1.5" stroke-dasharray="4 4"/>
   <!-- Book Illustration -->
-  <rect x="215" y="85" width="170" height="210" rx="3" fill="#262626" stroke="#e5e5e5" stroke-width="2"/>
-  <line x1="235" y1="85" x2="235" y2="295" stroke="#737373" stroke-width="2"/>
-  <rect x="255" y="115" width="105" height="8" fill="#e5e5e5"/>
-  <rect x="255" y="132" width="80" height="8" fill="#a3a3a3"/>
-  <rect x="255" y="165" width="105" height="60" stroke="#737373" stroke-width="1.5"/>
-  <circle cx="307" cy="195" r="16" stroke="#a3a3a3" stroke-width="1.5"/>
-  <line x1="255" y1="255" x2="330" y2="255" stroke="#737373" stroke-width="2"/>
-  <text x="300" y="340" text-anchor="middle" fill="#a3a3a3" font-family="monospace" font-size="14" letter-spacing="2">[BOOK // DATA-INTENSIVE APPS]</text>
+  <rect x="200" y="155" width="200" height="250" rx="3" fill="#262626" stroke="#e5e5e5" stroke-width="2"/>
+  <line x1="224" y1="155" x2="224" y2="405" stroke="#737373" stroke-width="2"/>
+  <rect x="248" y="190" width="120" height="8" fill="#e5e5e5"/>
+  <rect x="248" y="208" width="90" height="8" fill="#a3a3a3"/>
+  <rect x="248" y="245" width="120" height="75" stroke="#737373" stroke-width="1.5"/>
+  <circle cx="308" cy="282" r="20" stroke="#a3a3a3" stroke-width="1.5"/>
+  <line x1="248" y1="355" x2="340" y2="355" stroke="#737373" stroke-width="2"/>
+  <text x="300" y="465" text-anchor="middle" fill="#a3a3a3" font-family="monospace" font-size="14" letter-spacing="2">[BOOK // DATA-INTENSIVE APPS]</text>
 </svg>

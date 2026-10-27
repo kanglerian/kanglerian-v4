@@ -8,31 +8,21 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 
 <BaseLayout
 	title="Shop & Gear List"
-	description="Rekomendasi perangkat keras, setup meja kerja, dan buku pilihan Lerian Febriana dengan tautan Shopee Affiliate."
+	description="Katalog rekomendasi perangkat keras, setup meja kerja, dan buku pilihan Lerian Febriana."
 >
 	<div class="space-y-10">
 		<!-- Header -->
 		<section class="space-y-2">
 			<div class="text-xs font-mono uppercase tracking-widest text-neutral-500 dark:text-neutral-400">
-				// Rekomendasi &amp; Pilihan
+				// Katalog &amp; Rekomendasi
 			</div>
 			<h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">
 				Shop &amp; Gear List
 			</h1>
 			<p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-				Kumpulan perkakas kerja, aksesori meja (*desk setup*), buku, dan perlengkapan harian yang saya gunakan serta rekomendasikan secara objektif.
+				Katalog perkakas kerja, aksesori meja (*desk setup*), buku, dan perlengkapan harian yang saya gunakan serta rekomendasikan.
 			</p>
 		</section>
-
-		<!-- Affiliate Disclosure Box -->
-		<div class="border border-neutral-300 dark:border-neutral-700 p-4 font-mono text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5">
-			<p class="font-bold text-neutral-900 dark:text-neutral-100">
-				// Transparansi Afiliasi (Shopee Affiliate)
-			</p>
-			<p class="leading-relaxed">
-				Tautan produk di halaman ini mengarah ke Shopee. Jika Anda memutuskan untuk membeli melalui tautan tersebut, saya menerima komisi kecil dari Shopee tanpa biaya tambahan apa pun bagi Anda.
-			</p>
-		</div>
 
 		<!-- Search Bar & Category Filters -->
 		<section class="space-y-3">
@@ -84,12 +74,12 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 						data-desc={item.data.description.toLowerCase()}
 					>
 						<div>
-							<!-- Cover Barang -->
+							<!-- Cover Barang (1:1) -->
 							<a
 								href={item.data.shopeeUrl}
 								target="_blank"
-								rel="noopener noreferrer nofollow sponsored"
-								class="block aspect-video w-full overflow-hidden border-b border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 relative"
+								rel="noopener noreferrer"
+								class="block aspect-square w-full overflow-hidden border-b border-neutral-300 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 relative"
 							>
 								{item.data.image ? (
 									<img
@@ -105,39 +95,45 @@ const categories = ['Semua', ...Array.from(new Set(items.map((item) => item.data
 								)}
 							</a>
 
-							<div class="p-5 space-y-2.5">
+							<div class="p-4 space-y-2">
 								<div class="flex items-center justify-between text-xs font-mono">
 									<span class="border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 px-1.5 py-0.5 text-[11px]">
 										{item.data.category}
 									</span>
 									<span class="text-neutral-400 dark:text-neutral-500 text-[11px]">
-										{item.data.code ? `#${item.data.code}` : 'gear'}
+										{item.data.code ? `#${item.data.code}` : 'katalog'}
 									</span>
 								</div>
 
-								<h2 class="text-base font-bold text-neutral-900 dark:text-neutral-100">
+								<h2 class="text-sm sm:text-base font-bold text-neutral-900 dark:text-neutral-100">
 									{item.data.title}
 								</h2>
 
-								<p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+								<p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
 									{item.data.description}
 								</p>
 							</div>
 						</div>
 
-						<div class="px-5 pb-5">
+						<div class="px-4 pb-4">
 							<div class="pt-3 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-xs font-mono">
+								{item.data.price ? (
+									<span class="text-neutral-700 dark:text-neutral-300 font-semibold">
+										{item.data.price}
+									</span>
+								) : (
+									<span class="text-neutral-400 dark:text-neutral-500">
+										katalog
+									</span>
+								)}
 								<a
 									href={item.data.shopeeUrl}
 									target="_blank"
-									rel="noopener noreferrer nofollow sponsored"
+									rel="noopener noreferrer"
 									class="underline underline-offset-4 decoration-neutral-300 hover:decoration-black dark:decoration-neutral-700 dark:hover:decoration-white font-semibold text-neutral-900 dark:text-neutral-100 transition-colors"
 								>
-									[cek di shopee &rarr;]
+									[lihat &rarr;]
 								</a>
-								<span class="text-[11px] text-neutral-400 dark:text-neutral-500">
-									affiliate
-								</span>
 							</div>
 						</div>
 					</article>
